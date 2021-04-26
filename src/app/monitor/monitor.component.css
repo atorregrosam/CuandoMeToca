@@ -1,0 +1,15 @@
+#pagina {
+    width: 100%;
+}
+
+#principal {
+    position: sticky;
+    position: -webkit-sticky;
+    top: 1rem;
+}
+
+#tabla {
+    overflow-y: inherit;
+    scroll-behavior: auto;
+    display: grid;
+}

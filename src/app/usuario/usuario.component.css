@@ -3,3 +3,27 @@
         font-size: 20px;
     }
 }
+
+.cuerpo {
+    background-color: navajowhite;
+    min-height: 400px;
+    height: 70vh;
+    
+}
+
+.lista {
+    height: 61vh;
+    overflow: auto;
+}
+
+#ver{
+    min-width: 53px;
+}
+
+#pedir{
+    min-width: 83px;
+}
+
+#eliminar {
+    min-width: 45px;
+}

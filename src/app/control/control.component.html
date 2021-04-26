@@ -1,0 +1,123 @@
+<h4 class="text-center mt-3">Editar local {{ nombre }}</h4>
+
+<form id="formulario">
+    <div class="form-row mt-5">
+        <div class="form-group offset-3 col-6">
+            <label>Nombre</label>
+            <input class="form-control" [(ngModel)]="nombre" type="text" name="nombre">
+        </div>
+    </div>
+    <div class="form-row mt-4">
+        <div class="form-group offset-3 col-6">
+            <label>Dirección</label>
+            <input class="form-control" [(ngModel)]="direccion" type="text" name="direccion">
+        </div>
+    </div>
+    <div class="form-row mt-4">
+        <div class="form-group offset-3 col-6">
+            <label>Sector</label>
+            <select class="form-control" id="sector" name="sector" [(ngModel)]="sectorSeleccionado">
+                <option *ngFor="let item of sectores" [ngValue]="item.id">{{item.nombre}}</option>
+            </select>
+            <p>Tu sector es: {{ sector.nombre }}</p>
+        </div>
+    </div>
+    <div class="form-row mt-4">
+        <div class="form-group offset-3 col-6" disabled>
+            <label>Asociados</label>
+            <input class="form-control" [(ngModel)]="asociados" type="text" name="asociados" readonly>
+        </div>
+    </div>
+    <div class="form-row mt-2">
+        <div class="form-group offset-4 col-1">
+            <button (click)="menuAnyadir()" class="btn btn-outline-primary">Añadir Asociado</button>
+        </div>
+        <div class="form-group offset-2 col-1">
+            <button (click)="menuEliminar()" class="btn btn-outline-danger">Eliminar Asociado</button>
+        </div>
+    </div>
+    <div class="form-row mt-4">
+        <div class="form-group offset-5 col-2 text-center">
+            <button class="btn btn-outline-primary" (click)="guardarCambios()">Guardar Cambios</button>
+        </div>
+    </div>
+    <div class="form-row mt-5">
+        <div class="form-group offset-3 col-2 text-center">
+            <button class="btn btn-outline-success mt-2" (click)="cogerTurno()">Coger Turno</button>
+        </div>
+        <div class="form-group offset-0 col-2 text-center">
+            <button class="btn btn-outline-success mt-2" (click)="pasarTurno()">Pasar Turno</button>
+        </div>
+        <div class="form-group offset-0 col-2 text-center">
+            <button class="btn btn-outline-danger mt-2" (click)="retrocederTurno()">Retroceder Turno</button>
+        </div>
+    </div>
+
+</form>
+
+<ng-template #modalAnyadir let-modal>
+
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Añadir Asociado</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modal.close()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <label>Introduce el id del local: </label><br>
+            <input class="form-control" [(ngModel)]="idAsociado" type="number" name="id"><br>
+            <button class="btn btn-outline-success" (click)="anyadirAsociado()">Añadir Asociado</button>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" (click)="modal.close()">Cerrar</button>
+        </div>
+    </div>
+
+</ng-template>
+
+<ng-template #modalEliminar let-modal>
+
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Eliminar Asociado</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modal.close()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <select id="eliminado" [(ngModel)]="seleccionado">
+                <option *ngFor="let item of eliminar" [ngValue]="item.id">{{ item.nombre }}</option>
+            </select>
+            <button class="btn btn-danger ml-3" (click)="menuConfirmacion()">Eliminar</button>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" (click)="modal.close()">Cerrar</button>
+        </div>
+    </div>
+
+</ng-template>
+
+<ng-template #modalConfirmacion let-modal>
+
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">¿Estas seguro?</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modal.close()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <h3 class="text-center">¿Estas seguro de eliminar el asociado?</h3><br>
+            <div class="d-flex justify-content-between ">
+                <button class="btn btn-danger ml-3" (click)="eliminarAsociado();modal.close()">Si</button>
+            <button class="btn btn-info mr-3" (click)="modal.close()">No</button>
+            </div>
+            
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" (click)="modal.close()">Cerrar</button>
+        </div>
+    </div>
+
+</ng-template>

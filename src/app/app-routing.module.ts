@@ -1,13 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { InicioComponent } from './inicio/inicio.component';
-import { LocalComponent } from './local/local.component';
+import { ControlComponent } from './control/control.component';
+import { ErrorComponent } from './error/error.component';
+import { MonitorComponent } from './monitor/monitor.component';
 import { UsuarioComponent } from './usuario/usuario.component';
 
 const routes: Routes = [
-  { path: '', component: InicioComponent },
   { path: 'usuario', component: UsuarioComponent},
-  { path: 'local', component: LocalComponent}
+  { path: 'public/:id', component: MonitorComponent },
+  { path: 'local/:id', component: ControlComponent },
+  { path: '**', component: ErrorComponent }
 ];
 
 @NgModule({
