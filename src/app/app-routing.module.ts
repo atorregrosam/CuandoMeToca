@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ControlComponent } from './control/control.component';
-import { ErrorComponent } from './error/error.component';
-import { MonitorComponent } from './monitor/monitor.component';
-import { UsuarioComponent } from './usuario/usuario.component';
+import { ControlComponent } from './views/control/control.component';
+import { ErrorComponent } from './views/error/error.component';
+import { MonitorComponent } from './views/monitor/monitor.component';
+import { UsuarioComponent } from './views/usuario/usuario.component';
 
 const routes: Routes = [
   { path: 'usuario', component: UsuarioComponent},

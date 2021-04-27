@@ -1,33 +1,43 @@
-import { NgModule } from '@angular/core';
+// Core modules
+import { registerLocaleData } from '@angular/common';
+import { CommonModule } from '@angular/common';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { AppComponent } from './app.component';
+// App modules
 import { AppRoutingModule } from './app-routing.module';
-import { UsuarioComponent } from './usuario/usuario.component';
-import { MonitorComponent } from './monitor/monitor.component';
-import { ControlComponent } from './control/control.component';
-import { ErrorComponent } from './error/error.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ViewsModule } from './views/views.module';
+
+// External modules
+import { ToastrModule } from 'ngx-toastr';
+
+// Components
+import { AppComponent } from './app.component';
+
+// Locales
+import localeEs from '@angular/common/locales/es';
+
+// Register locale ES
+registerLocaleData(localeEs, 'es');
 
 @NgModule({
   declarations: [
     AppComponent,
-    UsuarioComponent,
-    MonitorComponent,
-    ControlComponent,
-    ErrorComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
-    NgbModule,
+    BrowserAnimationsModule,
+    CommonModule,
     HttpClientModule,
-    FormsModule,
-    ReactiveFormsModule
+    AppRoutingModule,
+    ViewsModule,
+    ToastrModule.forRoot(),
   ],
-  providers: [],
+  providers: [
+    { provide: LOCALE_ID, useValue: 'es' }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

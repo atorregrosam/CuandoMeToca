@@ -1,0 +1,69 @@
+/**
+ * Customize Bootstrap variables
+ */
+ $theme-colors: (
+  "primary": #1B365D,
+  "secondary": #22B1E0,
+  "success": #43aa00,
+  "light": #fff,
+  "dark": #000,
+);
+
+//$colors: (
+//  "white": #f4f5f8,
+//  "gray": #d7d8da,
+//);
+
+
+/**
+ * Import all of Bootstrap
+ */
+@import "~bootstrap/scss/bootstrap.scss";
+
+
+/**
+ * Import parts of Bootstrap
+ */
+/// Required
+//@import "~bootstrap/scss/_functions.scss";
+//@import "~bootstrap/scss/_variables.scss";
+//@import "~bootstrap/scss/_mixins.scss";
+
+/// Remove items from maps
+//$theme-colors: map-remove($theme-colors, "secondary", "info", "warning", "light", "dark");
+
+/// Optional
+//@import "~bootstrap/scss/_alert.scss";
+//@import "~bootstrap/scss/_badge.scss";
+//@import "~bootstrap/scss/_breadcrumbs.scss";
+//@import "~bootstrap/scss/_button-group.scss";
+//@import "~bootstrap/scss/_buttons.scss";
+//@import "~bootstrap/scss/_card.scss";
+//@import "~bootstrap/scss/_carousel.scss";
+//@import "~bootstrap/scss/_close.scss";
+//@import "~bootstrap/scss/_code.scss";
+//@import "~bootstrap/scss/_custom-forms.scss";
+//@import "~bootstrap/scss/_dropdown.scss";
+//@import "~bootstrap/scss/_forms.scss";
+//@import "~bootstrap/scss/_grid.scss";
+//@import "~bootstrap/scss/_images.scss";
+//@import "~bootstrap/scss/_input-group.scss";
+//@import "~bootstrap/scss/_jumbotron.scss";
+//@import "~bootstrap/scss/_list-group.scss";
+//@import "~bootstrap/scss/_media.scss";
+//@import "~bootstrap/scss/_modal.scss";
+//@import "~bootstrap/scss/_nav.scss";
+//@import "~bootstrap/scss/_navbar.scss";
+//@import "~bootstrap/scss/_pagination.scss";
+//@import "~bootstrap/scss/_popover.scss";
+//@import "~bootstrap/scss/_print.scss";
+//@import "~bootstrap/scss/_progress.scss";
+//@import "~bootstrap/scss/_reboot.scss";
+//@import "~bootstrap/scss/_root.scss";
+//@import "~bootstrap/scss/_spinners.scss";
+//@import "~bootstrap/scss/_tables.scss";
+//@import "~bootstrap/scss/_toast.scss";
+//@import "~bootstrap/scss/_tooltip.scss";
+//@import "~bootstrap/scss/_transitions.scss";
+//@import "~bootstrap/scss/_type.scss";
+//@import "~bootstrap/scss/_utilities.scss";

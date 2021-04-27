@@ -1,0 +1,80 @@
+
+/* ********* */
+/* FUNCTIONS */
+/* ********* */
+
+/**
+ * Originally provided by the iOS browser to allow developers to place their content in a safe area of the viewport, can
+ * be used to help ensure content is visible even to viewers using non‑rectangular displays.
+ *
+ * For iOS 11.0
+ *
+ * @param $position - 'top' | 'right' | 'bottom' | 'left'
+ */
+@function constant-safe-area($position) {
+  @return constant(safe-area-inset-#{$position});
+}
+
+/**
+ * Originally provided by the iOS browser to allow developers to place their content in a safe area of the viewport, can
+ * be used to help ensure content is visible even to viewers using non‑rectangular displays.
+ *
+ * For iOS 11.2 and above
+ *
+ * @param $position - 'top' | 'right' | 'bottom' | 'left'
+ */
+@function env-safe-area($position) {
+  @return env(safe-area-inset-#{$position});
+}
+
+
+
+/* ****** */
+/* MIXINS */
+/* ****** */
+
+/**
+ * Originally provided by the iOS browser to allow developers to place their content in a safe area of the viewport, can
+ * be used to help ensure content is visible even to viewers using non‑rectangular displays.
+ *
+ * @param $rule     - 'padding-top' | 'margin-bottom' | ...
+ * @param $position - 'top' | 'right' | 'bottom' | 'left'
+ */
+@mixin safe-area($rule, $position) {
+  #{$rule}: constant-safe-area($position);
+  #{$rule}: env-safe-area($position);
+}
+
+/**
+ * Auto-configures the <body>'s unsafe-area with pseudo-elements (::before & ::after) and a background color for them.
+ *
+ * @param $before-background  - 'transparent' (by default) | ...
+ * @param $after-background   - null (same as $before-background by default) | ...
+ * @see safe-area($rule, $position)
+ */
+@mixin body-safe-area($before-background: transparent, $after-background: null) {
+  body {
+    &::before, &::after {
+      content: "";
+      position: absolute;
+      width: 100%;
+      pointer-events: none;
+      cursor: default;
+      z-index: 0;
+    }
+
+    &::before {
+      top: 0;
+      background-color: $before-background;
+      @include safe-area(height, top);
+    }
+
+    &::after {
+      bottom: 0;
+      background-color: if($after-background != null, $after-background, $before-background);
+      @include safe-area(height, bottom);
+    }
+
+    @content;
+  }
+}

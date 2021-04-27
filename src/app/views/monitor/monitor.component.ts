@@ -5,7 +5,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 @Component({
   selector: 'app-monitor',
   templateUrl: './monitor.component.html',
-  styleUrls: ['./monitor.component.css']
+  styleUrls: ['./monitor.component.scss']
 })
 export class MonitorComponent implements OnInit {
 

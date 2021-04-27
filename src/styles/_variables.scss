@@ -1,0 +1,14 @@
+$corporative-colors: (
+  "primary": ("base":#1B365D, "contrast": #fff),
+  "secondary": ("base": #22B1E0, "contrast": #fff),
+  "light": ("base": #fff, "contrast": #000),
+  "dark": ("base": #000, "contrast": #fff),
+);
+
+
+/**
+ * Functions
+ */
+@function corporative-color($key, $type: "base") {
+  @return map-get(map-get($corporative-colors, $key), $type);
+}
