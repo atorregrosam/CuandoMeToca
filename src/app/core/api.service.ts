@@ -50,14 +50,31 @@ export class ApiService {
   }
 
   public pasarTurno(id: any): Observable<any[]> {
-    return this.$http.put<any[]>(`${environment.localesUrl}/local/${id}/pasaTurno`, id, { headers: this.headers });
+    return this.$http.put<any[]>(`${environment.localesUrl}/local/${id}/pasaTurno`, `{"idLocal":${id}}`, { headers: this.headers });
   }
 
   public cogerTurno(id: any): Observable<any[]> {
-    return this.$http.put<any[]>(`${environment.localesUrl}/local/${id}/cogeTurno`, id, { headers: this.headers });
+    return this.$http.post<any[]>(`${environment.localesUrl}/local/${id}/cogeTurno`, `{"idLocal":${id}}`, { headers: this.headers });
   }
 
   public retrocederTurno(id: any): Observable<any[]> {
-    return this.$http.put<any[]>(`${environment.localesUrl}/local/${id}/retrocedeTurno`, id, { headers: this.headers });
+    return this.$http.put<any[]>(`${environment.localesUrl}/local/${id}/retrocedeTurno`, `{"idLocal":${id}}`, { headers: this.headers });
+  }
+
+  public getLocalMonitor(id: any): Observable<ILocal> {
+    return this.$http.get<ILocal>(`${environment.monitoresUrl}/local/${id}/status`, { headers: this.headers });
+  }
+
+  public getLocalesUsuario(id: any): Observable<any[]> {
+    return this.$http.get<any[]>(`${environment.usuariosUrl}/list?ids=${id}`, { headers: this.headers });
+  }
+
+  public cogerTurnoUsuario(id: any): Observable<any> {
+    return this.$http.post<any>(`${environment.usuariosUrl}/local/${id}/cogeTurno`, {idLocal: id}, { headers: this.headers });
+  }
+
+  public dejarTurnoUsuario(id: any, idRegistro: any): Observable<any[]> {
+    return this.$http.post<any[]>(`${environment.usuariosUrl}/local/${id}/dejaTurno`, {idLocal: id, idTurno: idRegistro},
+    { headers: this.headers });
   }
 }

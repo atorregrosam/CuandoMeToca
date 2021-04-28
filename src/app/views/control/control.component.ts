@@ -35,6 +35,10 @@ export class ControlComponent implements OnInit, OnDestroy {
   public sectores: any;
   public sector: any = [];
   public sectorSeleccionado: any;
+  public esperando: any;
+  public formulario = true;
+  public botones = false;
+
 
   constructor(
     private route: ActivatedRoute,
@@ -68,8 +72,10 @@ export class ControlComponent implements OnInit, OnDestroy {
           this.asociados = this.local.relacionados;
           this.turnoUltimo = this.local.turnoUltimo;
           this.turnoActual = this.local.turnoActual;
+          this.esperando = this.local.esperando;
           this.sectores = this.local.sectores;
           this.sector = this.local.sector;
+          this.sectorSeleccionado = this.sector.id;
         }),
         catchError((e: HttpErrorResponse) => {
           this.toastr.error(this.$api.getErrorResponse(e));
@@ -164,6 +170,16 @@ export class ControlComponent implements OnInit, OnDestroy {
         return of(null);
       }),
     ).subscribe();
+  }
+
+  ocultarForm(): void {
+    this.formulario = true;
+    this.botones = false;
+  }
+
+  mostrarForm(): void {
+    this.formulario = false;
+    this.botones = true;
   }
 
   guardarCambios(): void {

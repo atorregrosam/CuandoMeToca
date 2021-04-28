@@ -13,4 +13,5 @@ export interface ILocal {
   sectores: ISector[];
   turnoUltimo?: any;
   turnoActual?: any;
+  esperando: any;
 }
