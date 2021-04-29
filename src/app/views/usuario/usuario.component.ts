@@ -18,9 +18,6 @@ export class UsuarioComponent implements OnInit {
   @ViewChild('modalTurno', { static: false }) modalTurno!: TemplateRef<any>;
   @ViewChild('modalCancelar', { static: false }) modalCancelar!: TemplateRef<any>;
 
-
-  url = 'http://192.168.1.10:9000/usuarios';
-
   idLocales: any = [];
   locales: any = [];
   id: any;

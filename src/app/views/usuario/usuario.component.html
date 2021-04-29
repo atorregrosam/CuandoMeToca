@@ -9,13 +9,13 @@
       <ul class="p-4 lista">
         <li class="list-group-item border mb-2" *ngFor="let item of locales;">
           <div class="d-flex justify-content-between
-                    align-items-center" *ngIf="!idTurno.includes(item.id.toString())">
+                    align-items-center" *ngIf="!idTurno.includes(item.idLocal.toString())">
             <div class="col-7">{{ item.nombre }}
             </div>
             <div class="col-5">
               <div class="row">
                 <button class="offset-sm-0 offset-md-4 col-2 col-xxs-1 col-md-4 btn btn-info" id="ver"
-                  (click)="pedirNumero(item.id)">Pedir Turno</button>
+                  (click)="pedirNumero(item.idLocal)">Pedir Turno</button>
                 <button class="offset-xxs-1 col-2 col-xxs-1 col-md-2 btn btn-danger" id="eliminar"
                   (click)="menuConfirmacion(item)">
                   <svg xmlns="http://www.w3.org/2000/svg" height="30px" viewBox="-40 0 427 427.00131" width="20px"
@@ -34,13 +34,13 @@
             </div>
           </div>
           <div class="d-flex justify-content-between
-                    align-items-center" *ngIf="idTurno.includes(item.id.toString())">
-            <div class="col-7">{{ item.nombre }}, tu turno es el {{ turnos.get(item.id.toString()) }}
+                    align-items-center" *ngIf="idTurno.includes(item.idLocal.toString())">
+            <div class="col-7">{{ item.nombre }}, tu turno es el {{ turnos.get(item.idLocal.toString()) }}
             </div>
             <div class="col-5">
               <div class="row">
                 <button class="offset-0 col-3 btn btn-info" (click)="verTurno(item)">Ver Turno</button>
-                <button class="offset-1 col-4 btn btn-warning" id="ver" (click)="menuCancelar(item.id)">Cancelar
+                <button class="offset-1 col-4 btn btn-warning" id="ver" (click)="menuCancelar(item)">Cancelar
                   Turno</button>
                 <button class="offset-1 col-2 btn btn-danger" id="eliminar" (click)="menuConfirmacion(item)">
                   <svg xmlns="http://www.w3.org/2000/svg" height="30px" viewBox="-40 0 427 427.00131" width="20px"
