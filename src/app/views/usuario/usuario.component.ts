@@ -66,7 +66,6 @@ export class UsuarioComponent implements OnInit {
     if (this.datos !== null && this.datos !== undefined) {
       this.mostrarLocales();
     }
-    console.log(this.idRegistro);
   }
 
   mostrarLocales(): void {
@@ -76,8 +75,10 @@ export class UsuarioComponent implements OnInit {
           tap((data: any) => {
             this.locales = Object.values(data);
             for (let i = 0; i < this.locales.length; i++) {
-              if (this.locales[i].turnoActual === this.idRegistro.get(this.locales[i].id.toString())) {
+              // tslint:disable-next-line: radix
+              if (this.locales[i].turnoActual >= parseInt(this.turnos.get(this.locales[i].idLocal.toString()))) {
                 console.log('si');
+                // consumeTurno
               }
             }
           }),
@@ -120,7 +121,6 @@ export class UsuarioComponent implements OnInit {
         this.turnos.set(local.toString(), this.data.turnoUltimo);
         this.idRegistro.set(local.toString(), this.data.turno.idRegistro.toString());
         this.registro.push(this.data.turno.idRegistro.toString());
-        console.log(this.registro);
         localStorage.setItem('idRegistro', this.registro);
       }),
       catchError((e: HttpErrorResponse) => {
@@ -138,21 +138,20 @@ export class UsuarioComponent implements OnInit {
 
   cancelarTurno(): void {
     // tslint:disable-next-line: radix
-    this.$api.dejarTurnoUsuario(this.local, this.idRegistro.get(this.local.toString()).toString()).pipe(
+    this.$api.dejarTurnoUsuario(this.local.idLocal, this.idRegistro.get(this.local.idLocal.toString())).pipe(
       tap((data: any) => {
         this.data = data;
-        this.idTurno.splice(this.idTurno.findIndex((e: any) => e === this.local.toString()), 1);
+        this.idTurno.splice(this.idTurno.findIndex((e: any) => e === this.local.idLocal.toString()), 1);
         localStorage.setItem('turno', this.idTurno);
         this.localesTurno.splice(this.localesTurno.findIndex((e: any) => e.toString() === this.data.turnoUltimo.toString()), 1);
         localStorage.setItem('turnoLocal', this.localesTurno);
         this.turnos.delete(this.local);
-        this.registro.splice(this.registro.findIndex((e: any) => e === this.idRegistro.get(this.local.toString())));
+        this.registro.splice(this.registro.findIndex((e: any) => e === this.idRegistro.get(this.local.idLocal.toString())));
         this.idRegistro.delete(this.local);
         localStorage.setItem('idRegistro', this.registro);
       }),
       catchError((e: HttpErrorResponse) => {
         this.toastr.error(this.$api.getErrorResponse(e));
-        console.log(e)
         return of(null);
       })
     ).subscribe();
@@ -165,24 +164,17 @@ export class UsuarioComponent implements OnInit {
 
   verTurno(local: any): void {
     this.local = local;
-    console.log(this.turnos)
-    this.turno = this.turnos.get(this.local.id.toString());
+    this.turno = this.turnos.get(this.local.idLocal.toString());
     this.modal.open(this.modalTurno);
   }
 
   eliminarRegistro(): void {
-    if (this.idTurno.includes(this.local.id.toString())) {
+    if (this.idTurno.includes(this.local.idLocal.toString())) {
       this.cancelarTurno();
-      console.log('si');
-    } else {
-      this.idTurno.splice(this.idTurno.findIndex((e: any) => e === this.local.id.toString()), 1);
-      localStorage.setItem('turno', this.idTurno);
-      this.turnos.delete(this.local.id);
     }
-    this.locales.splice(this.locales.findIndex((e: any) => e.id === this.local.id), 1);
-    this.idLocales.splice(this.idLocales.findIndex((e: any) => e === this.local.id.toString()), 1);
-    this.idRegistro.delete(this.local.id);
-    console.log(this.idRegistro);
+    this.locales.splice(this.locales.findIndex((e: any) => e.idLocal === this.local.idLocal), 1);
+    this.idLocales.splice(this.idLocales.findIndex((e: any) => e === this.local.idLocal.toString()), 1);
+    this.idRegistro.delete(this.local.idLocal);
     localStorage.setItem('usuario', this.idLocales);
     this.datos = localStorage.getItem('usuario');
   }
