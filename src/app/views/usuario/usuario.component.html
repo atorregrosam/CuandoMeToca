@@ -35,7 +35,7 @@
           </div>
           <div class="d-flex justify-content-between
                     align-items-center" *ngIf="idTurno.includes(item.id.toString())">
-            <div class="col-7">{{ item.nombre }}, tu turno es el {{ turnos.get(item.id) }}
+            <div class="col-7">{{ item.nombre }}, tu turno es el {{ turnos.get(item.id.toString()) }}
             </div>
             <div class="col-5">
               <div class="row">
@@ -84,9 +84,6 @@
         <button class="btn btn-outline-danger mr-3" (click)="modal.close()">No</button>
       </div>
     </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-danger" (click)="modal.close()">Cerrar</button>
-    </div>
   </div>
 
 </ng-template>
@@ -95,7 +92,7 @@
 
   <div class="modal-content">
     <div class="modal-header">
-      <h5 class="modal-title">Tu turno en {{ local.nombre }} es</h5>
+      <h5 class="modal-title">Tu turno en {{ local.nombre }} es el</h5>
       <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modal.close()">
         <span aria-hidden="true">&times;</span>
       </button>

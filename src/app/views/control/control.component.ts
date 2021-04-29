@@ -106,17 +106,18 @@ export class ControlComponent implements OnInit, OnDestroy {
   }
 
   menuEliminar(): void {
-    this.$api.getAsociados(this.idAsociado).pipe(
-      tap((data: any) => {
-        this.eliminar = data;
-      }),
-      catchError((e: HttpErrorResponse) => {
-        this.toastr.error(this.$api.getErrorResponse(e));
-        return of(null);
-      }),
-    ).subscribe();
-
-    this.modal.open(this.modalEliminar);
+    if (this.idAsociado !== null && this.idAsociado !== undefined) {
+      this.$api.getAsociados(this.idAsociado).pipe(
+        tap((data: any) => {
+          this.eliminar = data;
+        }),
+        catchError((e: HttpErrorResponse) => {
+          this.toastr.error(this.$api.getErrorResponse(e));
+          return of(null);
+        }),
+      ).subscribe();
+      this.modal.open(this.modalEliminar);
+    }
   }
 
   menuConfirmacion(): void {
@@ -138,6 +139,7 @@ export class ControlComponent implements OnInit, OnDestroy {
       tap((data: any) => {
         this.datos = data;
         this.turnoActual = this.datos.turnoActual;
+        this.esperando = this.datos.esperando;
       }),
       catchError((e: HttpErrorResponse) => {
         this.toastr.error(this.$api.getErrorResponse(e));
@@ -151,6 +153,7 @@ export class ControlComponent implements OnInit, OnDestroy {
       tap((data: any) => {
         this.datos = data;
         this.turnoUltimo = this.datos.turnoUltimo;
+        this.esperando = this.datos.esperando;
       }),
       catchError((e: HttpErrorResponse) => {
         this.toastr.error(this.$api.getErrorResponse(e));
@@ -160,10 +163,12 @@ export class ControlComponent implements OnInit, OnDestroy {
   }
 
   retrocederTurno(): void {
-    this.$api.cogerTurno(this.id).pipe(
+    this.$api.retrocederTurno(this.id).pipe(
       tap((data: any) => {
         this.datos = data;
+        console.log(this.datos);
         this.turnoActual = this.datos.turnoActual;
+        this.esperando = this.datos.esperando;
       }),
       catchError((e: HttpErrorResponse) => {
         this.toastr.error(this.$api.getErrorResponse(e));

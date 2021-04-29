@@ -5,7 +5,7 @@
     Local</button>
 </div>
 
-<form id="formulario" [hidden]="formulario">
+<form id="formulario" id="body" [hidden]="formulario">
   <div class="form-row">
     <div class="form-group offset-3">
       <button class="btn" (click)="ocultarForm()">
@@ -58,7 +58,7 @@
 
 </form>
 
-<div [hidden]="botones">
+<div [hidden]="botones" id="body">
   <div class="form-row mt-5">
     <div class="form-group offset-3 col-2 text-center">
       <button class="btn btn-outline-success mt-2" (click)="cogerTurno()">Coger Turno</button>

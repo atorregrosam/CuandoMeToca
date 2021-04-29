@@ -56,16 +56,18 @@ export class MonitorComponent implements OnInit {
       this.$api.getLocalMonitor(this.id).pipe(
         tap((data: ILocal) => {
           this.local = data;
-          this.relacionados = this.local.relacionados;
-          if (this.relacionados.length < 3) {
-            document.getElementById('pagina')?.setAttribute('style', 'overflow: hidden;');
-          } else {
-            document.getElementById('pagina')?.removeAttribute('style');
+          if (this.local.relacionados !== null) {
+            this.relacionados = this.local.relacionados;
+            if (this.relacionados.length < 3) {
+              document.getElementById('pagina')?.setAttribute('style', 'overflow: hidden;');
+            } else {
+              document.getElementById('pagina')?.removeAttribute('style');
+            }
           }
         }),
         catchError((e: HttpErrorResponse) => {
           this.toastr.error(this.$api.getErrorResponse(e));
-          this.router.navigate(['/local']);
+          this.router.navigate(['/public']);
           return of(null);
         }),
       ).subscribe();
