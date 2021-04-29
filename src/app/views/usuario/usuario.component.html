@@ -40,7 +40,7 @@
             <div class="col-5">
               <div class="row">
                 <button class="offset-0 col-3 btn btn-info" (click)="verTurno(item)">Ver Turno</button>
-                <button class="offset-1 col-4 btn btn-warning" id="ver" (click)="cancelarTurno(item.id)">Cancelar
+                <button class="offset-1 col-4 btn btn-warning" id="ver" (click)="menuCancelar(item.id)">Cancelar
                   Turno</button>
                 <button class="offset-1 col-2 btn btn-danger" id="eliminar" (click)="menuConfirmacion(item)">
                   <svg xmlns="http://www.w3.org/2000/svg" height="30px" viewBox="-40 0 427 427.00131" width="20px"
@@ -102,6 +102,26 @@
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-danger" (click)="modal.close()">Cerrar</button>
+    </div>
+  </div>
+
+</ng-template>
+
+<ng-template #modalCancelar let-modal>
+
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title">Cancelar Turno</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modal.close()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <h3>¿Quieres cancelar turno?</h3>
+      <div class="d-flex justify-content-between mt-4">
+        <button class="btn btn-outline-primary ml-3" (click)="modal.close(); cancelarTurno()">Si</button>
+        <button class="btn btn-outline-danger mr-3" (click)="modal.close()">No</button>
+      </div>
     </div>
   </div>
 

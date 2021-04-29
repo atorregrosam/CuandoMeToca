@@ -16,6 +16,7 @@ export class UsuarioComponent implements OnInit {
 
   @ViewChild('modalConfirmacion', { static: false }) modalConfirmacion!: TemplateRef<any>;
   @ViewChild('modalTurno', { static: false }) modalTurno!: TemplateRef<any>;
+  @ViewChild('modalCancelar', { static: false }) modalCancelar!: TemplateRef<any>;
 
 
   url = 'http://192.168.1.10:9000/usuarios';
@@ -129,19 +130,24 @@ export class UsuarioComponent implements OnInit {
     ).subscribe();
   }
 
+  menuCancelar(local: any): void {
+    this.local = local;
+    this.modal.open(this.modalCancelar);
+  }
 
-  cancelarTurno(local: any): void {
+
+  cancelarTurno(): void {
     // tslint:disable-next-line: radix
-    this.$api.dejarTurnoUsuario(local, this.idRegistro.get(local.toString()).toString()).pipe(
+    this.$api.dejarTurnoUsuario(this.local, this.idRegistro.get(this.local.toString()).toString()).pipe(
       tap((data: any) => {
         this.data = data;
-        this.idTurno.splice(this.idTurno.findIndex((e: any) => e === local.toString()), 1);
+        this.idTurno.splice(this.idTurno.findIndex((e: any) => e === this.local.toString()), 1);
         localStorage.setItem('turno', this.idTurno);
         this.localesTurno.splice(this.localesTurno.findIndex((e: any) => e.toString() === this.data.turnoUltimo.toString()), 1);
         localStorage.setItem('turnoLocal', this.localesTurno);
-        this.turnos.delete(local);
-        this.registro.splice(this.registro.findIndex((e: any) => e === this.idRegistro.get(local.toString())));
-        this.idRegistro.delete(local);
+        this.turnos.delete(this.local);
+        this.registro.splice(this.registro.findIndex((e: any) => e === this.idRegistro.get(this.local.toString())));
+        this.idRegistro.delete(this.local);
         localStorage.setItem('idRegistro', this.registro);
       }),
       catchError((e: HttpErrorResponse) => {
@@ -165,10 +171,8 @@ export class UsuarioComponent implements OnInit {
   }
 
   eliminarRegistro(): void {
-    console.log(this.local.id);
-    console.log(this.idTurno);
     if (this.idTurno.includes(this.local.id.toString())) {
-      this.cancelarTurno(this.local.id);
+      this.cancelarTurno();
       console.log('si');
     } else {
       this.idTurno.splice(this.idTurno.findIndex((e: any) => e === this.local.id.toString()), 1);

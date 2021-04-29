@@ -42,7 +42,7 @@ export class ApiService {
   }
 
   public updateLocal(id: any, local: any): Observable<any[]> {
-    return this.$http.put<any[]>(`${environment.localesUrl}/local/${id}/update`, local, { headers: this.headers });
+    return this.$http.put<any[]>(`${environment.localesUrl}/local/${id}/edit`, local, { headers: this.headers });
   }
 
   public getAsociados(idAsociado: any): Observable<any[]> {
