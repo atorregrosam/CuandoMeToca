@@ -35,7 +35,7 @@
           </div>
           <div class="d-flex justify-content-between
                     align-items-center" *ngIf="idTurno.includes(item.idLocal.toString())">
-            <div class="col-7">{{ item.nombre }}, tu turno es el {{ turnos.get(item.idLocal.toString()) }}
+            <div class="col-7">{{ item.nombre }}, tu turno es el {{ turnos.get(item.idLocal.toString()) }}, turno actual: {{ item.turnoActual }}
             </div>
             <div class="col-5">
               <div class="row">

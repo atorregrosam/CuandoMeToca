@@ -73,9 +73,32 @@ export class UsuarioComponent implements OnInit {
             this.locales = Object.values(data);
             for (let i = 0; i < this.locales.length; i++) {
               // tslint:disable-next-line: radix
-              if (this.locales[i].turnoActual >= parseInt(this.turnos.get(this.locales[i].idLocal.toString()))) {
-                console.log('si');
-                // consumeTurno
+              if (this.locales[i].turnoActual - parseInt(this.turnos.get(this.locales[i].idLocal.toString())) >= 3) {
+                console.log(this.locales[i].idLocal);
+                console.log(this.idRegistro.get(this.locales[i].idLocal.toString()));
+                console.log(this.idRegistro);
+                this.$api.consumirTurno(this.locales[i].idLocal, this.idRegistro.get(this.locales[i].idLocal.toString())).pipe(
+                  tap((data: any) => {
+                    this.data = data;
+                    this.idTurno.splice(this.idTurno.findIndex((e: any) => e === this.locales[i].idLocal.toString()), 1);
+                    localStorage.setItem('turno', this.idTurno);
+                    this.localesTurno.splice(this.localesTurno.findIndex((e: any) => e.toString() === this.data.turnoUltimo.toString()), 1);
+                    localStorage.setItem('turnoLocal', this.localesTurno);
+                    this.turnos.delete(this.locales[i]);
+                    this.registro.splice(this.registro.findIndex((e: any) => e === this.idRegistro.get(this.locales[i].idLocal.toString())));
+                    this.idRegistro.delete(this.locales[i]);
+                    console.log(this.idRegistro);
+                    localStorage.setItem('idRegistro', this.registro);
+                  }),
+                  catchError((e: HttpErrorResponse) => {
+                    this.toastr.error(this.$api.getErrorResponse(e));
+                    return of(null);
+                  })
+                ).subscribe();
+              }
+              if (parseInt(this.turnos.get(this.locales[i].idLocal.toString())) - this.locales[i].turnoActual <= 3 && parseInt(this.turnos.get(this.locales[i].idLocal.toString())) - this.locales[i].turnoActual >= -3) {
+                console.log('aca');
+                // estilo
               }
             }
           }),
