@@ -95,7 +95,15 @@ export class ControlComponent implements OnInit, OnDestroy {
     if (this.id !== this.idAsociado) {
       this.$api.getAsociados(this.idAsociado).pipe(
         tap((data: any) => {
-          this.asociados = this.asociados.concat(',', this.idAsociado);
+          if (this.asociados === null) {
+            this.asociados = '';
+            this.asociados = this.asociados.concat(this.idAsociado);
+          } else {
+            if (!this.asociados.split(',').includes(this.idAsociado.toString())){
+              this.asociados = this.asociados.concat(',', this.idAsociado);
+            }
+          }
+
         }),
         catchError((e: HttpErrorResponse) => {
           this.toastr.error(this.$api.getErrorResponse(e));
@@ -106,8 +114,8 @@ export class ControlComponent implements OnInit, OnDestroy {
   }
 
   menuEliminar(): void {
-    if (this.idAsociado !== null && this.idAsociado !== undefined) {
-      this.$api.getAsociados(this.idAsociado).pipe(
+    if (this.asociados !== null && this.asociados !== undefined) {
+      this.$api.getAsociados(this.asociados).pipe(
         tap((data: any) => {
           this.eliminar = data;
         }),
