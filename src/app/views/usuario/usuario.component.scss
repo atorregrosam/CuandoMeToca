@@ -4,6 +4,11 @@
     }
 }
 
+@font-face {
+  font-family: open-sans;
+  src: url(../../../assets/fonts/Open-sans/OpenSans-Regular.ttf);
+}
+
 .cuerpo {
     background-color: navajowhite;
     min-height: 400px;
@@ -12,6 +17,10 @@
 
 .btn {
   height: 62px;
+}
+
+.texto {
+  font-family: 'open-sans';
 }
 
 .lista {

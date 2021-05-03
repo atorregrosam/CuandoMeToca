@@ -40,19 +40,21 @@ export class UsuarioComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    if (localStorage.getItem('turno') !== '' && localStorage.getItem('turno') !== null) {
+    if (localStorage.getItem('turno') !== '' && localStorage.getItem('turno') !== null && localStorage.getItem('turno') !== undefined) {
       this.idTurno = localStorage.getItem('turno')?.split(',');
       this.localesTurno = localStorage.getItem('turnoLocal')?.split(',');
       // tslint:disable-next-line: prefer-for-of
       for (let i = 0; i < this.idTurno.length; i++) {
         this.turnos.set(this.idTurno[i], this.localesTurno[i]);
       }
-      if (localStorage.getItem('idRegistro') !== undefined && localStorage.getItem('idRegistro') !== null) {
-        this.registroArray = localStorage.getItem('idRegistro')?.split(',');
-        // tslint:disable-next-line: prefer-for-of tslint:disable-next-line: no-non-null-assertion
-        for (let i = 0; i < this.registroArray.length; i++) {
-          this.idRegistro.set(this.idTurno[i], this.registroArray[i]);
-        }
+    }
+
+    if (localStorage.getItem('idRegistro') !== undefined && localStorage.getItem('idRegistro') !== '' &&
+      localStorage.getItem('idRegistro') !== null) {
+      this.registroArray = localStorage.getItem('idRegistro')?.split(',');
+      // tslint:disable-next-line: prefer-for-of tslint:disable-next-line: no-non-null-assertion
+      for (let i = 0; i < this.registroArray.length; i++) {
+        this.idRegistro.set(this.idTurno[i], this.registroArray[i]);
       }
     }
 
@@ -72,7 +74,7 @@ export class UsuarioComponent implements OnInit {
           tap((data: any) => {
             this.locales = Object.values(data);
             this.ordenarLocales();
-            this.consumirTurno();
+            this.comprobarTurno();
           }),
           catchError((e: HttpErrorResponse) => {
             this.toastr.error(this.$api.getErrorResponse(e));
@@ -102,36 +104,61 @@ export class UsuarioComponent implements OnInit {
     });
   }
 
-  consumirTurno(): void {
+  comprobarTurno(): void {
     for (let i = 0; i < this.locales.length; i++) {
       // tslint:disable-next-line: radix
-      if (this.locales[i].turnoActual - parseInt(this.turnos.get(this.locales[i].idLocal.toString())) >= 3) {
-        this.$api.consumirTurno(this.locales[i].idLocal, this.idRegistro.get(this.locales[i].idLocal.toString())).pipe(
-          tap((data: any) => {
-            this.data = data;
-            this.idTurno.splice(this.idTurno.findIndex((e: any) => e === this.locales[i].idLocal.toString()), 1);
-            localStorage.setItem('turno', this.idTurno);
-            this.localesTurno.splice(this.localesTurno.findIndex((e: any) => e.toString() === this.data.turnoUltimo.toString()), 1);
-            localStorage.setItem('turnoLocal', this.localesTurno);
-            this.turnos.delete(this.locales[i].idLocal.toString());
-            this.registro.splice(this.registro.findIndex((e: any) => e ===
-              this.idRegistro.get(this.locales[i].idLocal.toString())));
-            this.idRegistro.delete(this.locales[i].idLocal.toString());
-            console.log(this.idRegistro);
-            localStorage.setItem('idRegistro', this.registro);
-          }),
-          catchError((e: HttpErrorResponse) => {
-            this.toastr.error(this.$api.getErrorResponse(e));
-            return of(null);
-          })
-        ).subscribe();
-      }
-      if (parseInt(this.turnos.get(this.locales[i].idLocal.toString())) - this.locales[i].turnoActual <= 3) {
-        setTimeout(function () {
-          document.getElementsByClassName('turno')[i].setAttribute('style', 'color:red;');
-        }, 10);
+      if (this.locales[i].turnoActual <= 3) {
+        if ((this.locales[i].turnoActual + 196) > parseInt(this.turnos.get(this.locales[i].idLocal.toString()))) {
+          this.consumirTurno(i);
+        }
+        if ((this.locales[i].turnoActual + 196) > parseInt(this.turnos.get(this.locales[i].idLocal.toString())) &&
+          this.locales[i].turnoActual - parseInt(this.turnos.get(this.locales[i].idLocal.toString())) > (-3)) {
+          this.cambiarEstilo(i);
+        }
+      } else if (this.locales[i].turnoActual >= 197) {
+        if ((this.locales[i].turnoActual - 196) > parseInt(this.turnos.get(this.locales[i].idLocal.toString()))) {
+          this.cambiarEstilo(i);
+        }
+      } else {
+        if (this.locales[i].turnoActual - parseInt(this.turnos.get(this.locales[i].idLocal.toString())) > 3 &&
+          this.locales[i].turnoActual - parseInt(this.turnos.get(this.locales[i].idLocal.toString())) < 8) {
+            this.consumirTurno(i);
+        } else if (this.locales[i].turnoActual - parseInt(this.turnos.get(this.locales[i].idLocal.toString())) < 3 &&
+          this.locales[i].turnoActual - parseInt(this.turnos.get(this.locales[i].idLocal.toString())) > (-3)) {
+            this.cambiarEstilo(i);
+        }
       }
     }
+  }
+
+  consumirTurno(id: any): void {
+    if (this.locales[id].turnoActual - parseInt(this.turnos.get(this.locales[id].idLocal.toString())) >= (-3) &&
+      this.locales[id].turnoActual - parseInt(this.turnos.get(this.locales[id].idLocal.toString())) <= 3) {
+      this.$api.consumirTurno(this.locales[id].idLocal, this.idRegistro.get(this.locales[id].idLocal.toString())).pipe(
+        tap((data: any) => {
+          this.data = data;
+          this.idTurno.splice(this.idTurno.findIndex((e: any) => e === this.locales[id].idLocal.toString()), 1);
+          localStorage.setItem('turno', this.idTurno);
+          this.localesTurno.splice(this.localesTurno.findIndex((e: any) => e.toString() === this.data.turnoUltimo.toString()), 1);
+          localStorage.setItem('turnoLocal', this.localesTurno);
+          this.turnos.delete(this.locales[id].idLocal.toString());
+          this.registro.splice(this.registro.findIndex((e: any) => e ===
+            this.idRegistro.get(this.locales[id].idLocal.toString())));
+          this.idRegistro.delete(this.locales[id].idLocal.toString());
+          localStorage.setItem('idRegistro', this.registro);
+        }),
+        catchError((e: HttpErrorResponse) => {
+          this.toastr.error(this.$api.getErrorResponse(e));
+          return of(null);
+        })
+      ).subscribe();
+    }
+
+  }
+
+
+  cambiarEstilo(id: any): void {
+    document.getElementsByClassName('turno')[id].setAttribute('style', 'color:red');
   }
 
   registrarLocal(): void {
@@ -179,6 +206,8 @@ export class UsuarioComponent implements OnInit {
   }
 
   cancelarTurno(): void {
+    console.log(this.local);
+    console.log(this.idRegistro);
     // tslint:disable-next-line: radix
     this.$api.dejarTurnoUsuario(this.local.idLocal, this.idRegistro.get(this.local.idLocal.toString())).pipe(
       tap((data: any) => {
