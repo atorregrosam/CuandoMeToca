@@ -112,8 +112,8 @@
       </button>
     </div>
     <div class="modal-body">
-      <select id="eliminado" [(ngModel)]="seleccionado">
-        <option *ngFor="let item of eliminar" [ngValue]="item.id">{{ item.nombre }}</option>
+      <select [(ngModel)]="seleccionado">
+        <option *ngFor="let item of eliminar" [ngValue]="item.idLocal">{{ item.nombre }}</option>
       </select>
       <button class="btn btn-danger ml-3" (click)="menuConfirmacion()">Eliminar</button>
     </div>
@@ -140,9 +140,6 @@
         <button class="btn btn-info mr-3" (click)="modal.close()">No</button>
       </div>
 
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-danger" (click)="modal.close()">Cerrar</button>
     </div>
   </div>
 

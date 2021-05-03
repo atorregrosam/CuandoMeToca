@@ -135,11 +135,9 @@ export class ControlComponent implements OnInit, OnDestroy {
   }
 
   eliminarAsociado(): void {
-    if (this.seleccionado !== undefined) {
       this.asociadosArray = this.asociados.split(',');
       this.asociadosArray.splice(this.asociadosArray.findIndex((e: any) => e === this.seleccionado.toString()), 1);
       this.asociados = this.asociadosArray.toString();
-    }
   }
 
   pasarTurno(): void {
