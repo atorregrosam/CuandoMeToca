@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ApiService } from 'src/app/core/api.service';
-import { interval, of, Subscription } from 'rxjs';
+import { interval, of } from 'rxjs';
 import { catchError, startWith, tap } from 'rxjs/operators';
 import { ILocal } from 'src/app/models/ILocal';
 import { ToastrService } from 'ngx-toastr';
@@ -32,7 +32,6 @@ export class MonitorComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private http: HttpClient,
     private $api: ApiService,
     private toastr: ToastrService
   ) { }
@@ -52,6 +51,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
   }
 
   actualizarLocales(): void {
+    // tslint:disable-next-line: deprecation
     this.interval0 = interval(30000).pipe(startWith(0)).subscribe(() => {
       this.$api.getLocalMonitor(this.id).pipe(
         tap((data: ILocal) => {
@@ -70,12 +70,14 @@ export class MonitorComponent implements OnInit, OnDestroy {
           this.router.navigate(['/public']);
           return of(null);
         }),
+      // tslint:disable-next-line: deprecation
       ).subscribe();
     });
   }
 
   intervalo1(): void {
     let i = 0;
+    // tslint:disable-next-line: deprecation
     this.interval = interval(50).pipe().subscribe(() => {
       window.scrollBy(0, 1);
       if (window.scrollY === i) {
@@ -88,6 +90,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
 
   intervalo2(): void {
     let i = 0;
+    // tslint:disable-next-line: deprecation
     this.interval2 = interval(50).pipe().subscribe(() => {
       window.scrollBy(0, -1);
       if (window.scrollY === 0) {

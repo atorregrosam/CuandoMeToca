@@ -64,6 +64,7 @@ export class ControlComponent implements OnInit, OnDestroy {
 
   private actualizarLocales(): void {
     // Interval 30 seconds
+    // tslint:disable-next-line: deprecation
     this.interval = interval(30000).pipe(startWith(0)).subscribe(() => {
       this.$api.getLocalById(this.id).pipe(
         tap((data: ILocal) => {
@@ -83,6 +84,7 @@ export class ControlComponent implements OnInit, OnDestroy {
           this.router.navigate(['/local']);
           return of(null);
         }),
+      // tslint:disable-next-line: deprecation
       ).subscribe();
     });
   }
@@ -110,6 +112,7 @@ export class ControlComponent implements OnInit, OnDestroy {
           this.toastr.error(this.$api.getErrorResponse(e));
           return of(null);
         }),
+      // tslint:disable-next-line: deprecation
       ).subscribe();
     }
   }
@@ -124,6 +127,7 @@ export class ControlComponent implements OnInit, OnDestroy {
           this.toastr.error(this.$api.getErrorResponse(e));
           return of(null);
         }),
+      // tslint:disable-next-line: deprecation
       ).subscribe();
       this.modal.open(this.modalEliminar);
     }
@@ -152,6 +156,7 @@ export class ControlComponent implements OnInit, OnDestroy {
         this.toastr.error(this.$api.getErrorResponse(e));
         return of(null);
       }),
+    // tslint:disable-next-line: deprecation
     ).subscribe();
   }
 
@@ -167,6 +172,7 @@ export class ControlComponent implements OnInit, OnDestroy {
         this.toastr.error(this.$api.getErrorResponse(e));
         return of(null);
       }),
+    // tslint:disable-next-line: deprecation
     ).subscribe();
   }
 
@@ -182,6 +188,7 @@ export class ControlComponent implements OnInit, OnDestroy {
         this.toastr.error(this.$api.getErrorResponse(e));
         return of(null);
       }),
+    // tslint:disable-next-line: deprecation
     ).subscribe();
   }
 
@@ -214,6 +221,7 @@ export class ControlComponent implements OnInit, OnDestroy {
           this.toastr.error(this.$api.getErrorResponse(e));
           return of(null);
         }),
+      // tslint:disable-next-line: deprecation
       ).subscribe();
     }
   }

@@ -1,9 +1,8 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 import { interval, of } from 'rxjs';
 import { catchError, startWith, tap } from 'rxjs/operators';
 import { ApiService } from 'src/app/core/api.service';
-import { ILocal } from 'src/app/models/ILocal';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
@@ -72,6 +71,7 @@ export class UsuarioComponent implements OnInit {
   }
 
   mostrarLocales(): void {
+    // tslint:disable-next-line: deprecation
     interval(30000).pipe(startWith(0)).subscribe(() => {
       if (this.datos !== undefined && this.datos !== null) {
         this.$api.getLocalesUsuario(this.datos).pipe(
@@ -84,6 +84,7 @@ export class UsuarioComponent implements OnInit {
             this.toastr.error(this.$api.getErrorResponse(e));
             return of(null);
           })
+        // tslint:disable-next-line: deprecation
         ).subscribe();
       }
     });
@@ -112,22 +113,30 @@ export class UsuarioComponent implements OnInit {
     for (let i = 0; i < this.locales.length; i++) {
       // tslint:disable-next-line: radix
       if (this.locales[i].turnoActual <= 3) {
+        // tslint:disable-next-line: radix
         if ((this.locales[i].turnoActual + 196) < parseInt(this.turnos.get(this.locales[i].idLocal.toString()))) {
           this.consumirTurno(i);
         }
+        // tslint:disable-next-line: radix
         if ((this.locales[i].turnoActual + 196) > parseInt(this.turnos.get(this.locales[i].idLocal.toString())) &&
+          // tslint:disable-next-line: radix
           this.locales[i].turnoActual - parseInt(this.turnos.get(this.locales[i].idLocal.toString())) > (-3)) {
           this.cambiarEstilo(i);
         }
       } else if (this.locales[i].turnoActual >= 197) {
+        // tslint:disable-next-line: radix
         if ((this.locales[i].turnoActual - 196) > parseInt(this.turnos.get(this.locales[i].idLocal.toString()))) {
           this.cambiarEstilo(i);
         }
       } else {
+        // tslint:disable-next-line: radix
         if (this.locales[i].turnoActual - parseInt(this.turnos.get(this.locales[i].idLocal.toString())) > 3 &&
+          // tslint:disable-next-line: radix
           this.locales[i].turnoActual - parseInt(this.turnos.get(this.locales[i].idLocal.toString())) < 8) {
           this.consumirTurno(i);
+        // tslint:disable-next-line: radix
         } else if (this.locales[i].turnoActual - parseInt(this.turnos.get(this.locales[i].idLocal.toString())) < 3 &&
+          // tslint:disable-next-line: radix
           this.locales[i].turnoActual - parseInt(this.turnos.get(this.locales[i].idLocal.toString())) > (-3)) {
           this.cambiarEstilo(i);
         }
@@ -153,6 +162,7 @@ export class UsuarioComponent implements OnInit {
         this.toastr.error(this.$api.getErrorResponse(e));
         return of(null);
       })
+    // tslint:disable-next-line: deprecation
     ).subscribe();
   }
 
@@ -187,6 +197,7 @@ export class UsuarioComponent implements OnInit {
           this.toastr.error(this.$api.getErrorResponse(e));
           return of(null);
         })
+      // tslint:disable-next-line: deprecation
       ).subscribe();
     }
   }
@@ -208,6 +219,7 @@ export class UsuarioComponent implements OnInit {
         this.toastr.error(this.$api.getErrorResponse(e));
         return of(null);
       })
+    // tslint:disable-next-line: deprecation
     ).subscribe();
   }
 
@@ -234,6 +246,7 @@ export class UsuarioComponent implements OnInit {
         this.toastr.error(this.$api.getErrorResponse(e));
         return of(null);
       })
+    // tslint:disable-next-line: deprecation
     ).subscribe();
   }
 
