@@ -1,16 +1,16 @@
-<nav class="nav justify-content-center py-3 text-capitalize font-weight-bold texto">Mis locales</nav>
+<nav class="nav justify-content-center py-3 text-capitalize font-weight-bold">Mis locales</nav>
 
 <div class="cuerpo p-4">
   <div class="h-100 shadow bg-light">
     <div *ngIf="idLocales.length === 0" class="text-center">
-      <p class="pt-5 font-italic texto" style="font-size: 50px;">No has registrado ningun local</p>
+      <p class="pt-5 font-italic" style="font-size: 50px;">No has registrado ningun local</p>
     </div>
     <div *ngIf="idLocales.length !== 0">
       <ul class="p-4 lista">
         <li class="list-group-item border mb-2" *ngFor="let item of locales;">
           <div class="d-flex justify-content-between
                     align-items-center" *ngIf="!idTurno.includes(item.idLocal.toString())">
-            <div class="col-7 texto">
+            <div class="col-7">
               <button class="btn" (click)="menuConfirmacion(item)">
                 <svg xmlns="http://www.w3.org/2000/svg" height="30px" viewBox="-40 0 427 427.00131" width="20px"
                   fill="black">
@@ -28,7 +28,7 @@
             </div>
             <div class="col-4">
               <div class="row">
-                <button class="offset-6 col-4 btn btn-info texto" id="ver" (click)="pedirNumero(item.idLocal)">Pedir
+                <button class="offset-6 col-4 btn btn-info" id="ver" (click)="pedirNumero(item.idLocal)">Pedir
                   Turno</button>
               </div>
             </div>
@@ -36,7 +36,7 @@
           <div class="d-flex justify-content-between
                     align-items-center" *ngIf="idTurno.includes(item.idLocal.toString())">
             <div class="col-3">
-              <button class="btn texto" (click)="menuConfirmacion(item)">
+              <button class="btn" (click)="menuConfirmacion(item)">
                 <svg xmlns="http://www.w3.org/2000/svg" height="30px" viewBox="-40 0 427 427.00131" width="20px"
                   fill="black">
                   <path
@@ -51,13 +51,13 @@
               </button>
               {{ item.nombre }}
             </div>
-            <div class="col-2 turno texto">
+            <div class="col-2 turno">
               Tu turno es el {{ turnos.get(item.idLocal.toString()) }}
             </div>
-            <div class="col-2 texto">
+            <div class="col-2">
               Turno actual: {{ item.turnoActual }}
             </div>
-            <div class="col-4 texto">
+            <div class="col-4">
               <div class="row">
                 <button class="offset-2 col-3 btn btn-info" (click)="verTurno(item)" id="ver">Ver Turno</button>
                 <button class="offset-1 col-4 btn btn-warning" id="cancelar" (click)="menuCancelar(item)">Cancelar
@@ -129,6 +129,25 @@
         <button class="btn btn-outline-primary ml-3" (click)="modal.close(); cancelarTurno()" style="height: 40px; width: 70px;">Si</button>
         <button class="btn btn-outline-danger mr-3" (click)="modal.close()" style="height: 40px; width: 70px;">No</button>
       </div>
+    </div>
+  </div>
+
+</ng-template>
+
+<ng-template #modalNotificacion let-modal>
+
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title">Atención</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modal.close()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <h3 class="text-center bold">Está a punto de ser atendido</h3>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" (click)="modal.close()">Cerrar</button>
     </div>
   </div>
 

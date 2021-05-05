@@ -1,4 +1,4 @@
-<h4 class="text-center mt-3" id="body">Local {{ nombre }}
+<h4 class="text-center mt-3" id="body" style="font-size: 35px;">Local {{ nombre }}
   <button class="btn" [hidden]="botones" (click)="mostrarForm()">
     <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -1 401.52289 401" width="20px">
       <path
@@ -72,7 +72,7 @@
     <div class="form-group offset-0 col-4 text-center">
       <button class="btn mt-2 w-100 border border-dark rounded" (click)="pasarTurno()">Pasar Turno
         <h3 style="font-size: 70px;">{{ turnoActual }}<p style="font-size: 20px;">Último turno: {{ turnoUltimo }}</p></h3>
-        <p class="text-center" style="color: red;">Clientes esperando: {{ esperando }}</p>
+        <p class="text-center" style="color: #9d0208;">Clientes esperando: {{ esperando }}</p>
       </button>
     </div>
     <div class="form-group offset-0 col-2 text-center">
@@ -140,6 +140,25 @@
         <button class="btn btn-info mr-3" (click)="modal.close()">No</button>
       </div>
 
+    </div>
+  </div>
+
+</ng-template>
+
+<ng-template #modalTurno let-modal>
+
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title">Turno asignado</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modal.close()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p class="text-center" style="font-size: 100px;">{{ turnoUltimo }}</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" (click)="modal.close()">Cerrar</button>
     </div>
   </div>
 

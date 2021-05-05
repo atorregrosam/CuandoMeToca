@@ -5,7 +5,7 @@ import { catchError, startWith, tap } from 'rxjs/operators';
 import { ApiService } from 'src/app/core/api.service';
 import { ILocal } from 'src/app/models/ILocal';
 import { ToastrService } from 'ngx-toastr';
-import { NgbModal, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-usuario',
@@ -17,6 +17,9 @@ export class UsuarioComponent implements OnInit {
   @ViewChild('modalConfirmacion', { static: false }) modalConfirmacion!: TemplateRef<any>;
   @ViewChild('modalTurno', { static: false }) modalTurno!: TemplateRef<any>;
   @ViewChild('modalCancelar', { static: false }) modalCancelar!: TemplateRef<any>;
+  @ViewChild('modalNotificacion', { static: false }) modalNotificacion!: TemplateRef<any>;
+
+  private modalService!: NgbModalRef;
 
   idLocales: any = [];
   locales: any = [];
@@ -52,6 +55,7 @@ export class UsuarioComponent implements OnInit {
     if (localStorage.getItem('idRegistro') !== undefined && localStorage.getItem('idRegistro') !== '' &&
       localStorage.getItem('idRegistro') !== null) {
       this.registroArray = localStorage.getItem('idRegistro')?.split(',');
+      this.registro = localStorage.getItem('idRegistro')?.split(',');
       // tslint:disable-next-line: prefer-for-of tslint:disable-next-line: no-non-null-assertion
       for (let i = 0; i < this.registroArray.length; i++) {
         this.idRegistro.set(this.idTurno[i], this.registroArray[i]);
@@ -108,7 +112,7 @@ export class UsuarioComponent implements OnInit {
     for (let i = 0; i < this.locales.length; i++) {
       // tslint:disable-next-line: radix
       if (this.locales[i].turnoActual <= 3) {
-        if ((this.locales[i].turnoActual + 196) > parseInt(this.turnos.get(this.locales[i].idLocal.toString()))) {
+        if ((this.locales[i].turnoActual + 196) < parseInt(this.turnos.get(this.locales[i].idLocal.toString()))) {
           this.consumirTurno(i);
         }
         if ((this.locales[i].turnoActual + 196) > parseInt(this.turnos.get(this.locales[i].idLocal.toString())) &&
@@ -122,43 +126,50 @@ export class UsuarioComponent implements OnInit {
       } else {
         if (this.locales[i].turnoActual - parseInt(this.turnos.get(this.locales[i].idLocal.toString())) > 3 &&
           this.locales[i].turnoActual - parseInt(this.turnos.get(this.locales[i].idLocal.toString())) < 8) {
-            this.consumirTurno(i);
+          this.consumirTurno(i);
         } else if (this.locales[i].turnoActual - parseInt(this.turnos.get(this.locales[i].idLocal.toString())) < 3 &&
           this.locales[i].turnoActual - parseInt(this.turnos.get(this.locales[i].idLocal.toString())) > (-3)) {
-            this.cambiarEstilo(i);
+          this.cambiarEstilo(i);
         }
       }
     }
   }
 
   consumirTurno(id: any): void {
-    if (this.locales[id].turnoActual - parseInt(this.turnos.get(this.locales[id].idLocal.toString())) >= (-3) &&
-      this.locales[id].turnoActual - parseInt(this.turnos.get(this.locales[id].idLocal.toString())) <= 3) {
-      this.$api.consumirTurno(this.locales[id].idLocal, this.idRegistro.get(this.locales[id].idLocal.toString())).pipe(
-        tap((data: any) => {
-          this.data = data;
-          this.idTurno.splice(this.idTurno.findIndex((e: any) => e === this.locales[id].idLocal.toString()), 1);
-          localStorage.setItem('turno', this.idTurno);
-          this.localesTurno.splice(this.localesTurno.findIndex((e: any) => e.toString() === this.data.turnoUltimo.toString()), 1);
-          localStorage.setItem('turnoLocal', this.localesTurno);
-          this.turnos.delete(this.locales[id].idLocal.toString());
-          this.registro.splice(this.registro.findIndex((e: any) => e ===
-            this.idRegistro.get(this.locales[id].idLocal.toString())));
-          this.idRegistro.delete(this.locales[id].idLocal.toString());
-          localStorage.setItem('idRegistro', this.registro);
-        }),
-        catchError((e: HttpErrorResponse) => {
-          this.toastr.error(this.$api.getErrorResponse(e));
-          return of(null);
-        })
-      ).subscribe();
-    }
-
+    this.$api.consumirTurno(this.locales[id].idLocal.toString(), this.idRegistro.get(this.locales[id].idLocal.toString())).pipe(
+      tap((data: any) => {
+        this.data = data;
+        this.idTurno.splice(this.idTurno.findIndex((e: any) => e === this.locales[id].idLocal.toString()), 1);
+        localStorage.setItem('turno', this.idTurno);
+        this.localesTurno.splice(this.localesTurno.findIndex((e: any) => e.toString() === this.data.turnoUltimo.toString()), 1);
+        localStorage.setItem('turnoLocal', this.localesTurno);
+        this.turnos.delete(this.locales[id].idLocal.toString());
+        this.registro.splice(this.registro.findIndex((e: any) => e ===
+          this.idRegistro.get(this.locales[id].idLocal.toString())));
+        this.idRegistro.delete(this.locales[id].idLocal.toString());
+        localStorage.setItem('idRegistro', this.registro);
+      }),
+      catchError((e: HttpErrorResponse) => {
+        this.toastr.error(this.$api.getErrorResponse(e));
+        return of(null);
+      })
+    ).subscribe();
   }
 
-
   cambiarEstilo(id: any): void {
-    document.getElementsByClassName('turno')[id].setAttribute('style', 'color:red');
+    setTimeout(() => {
+      document.getElementsByClassName('turno')[id].setAttribute('style', 'color: #9d0208');
+      this.mostrarNotificacion();
+    }, 10);
+  }
+
+  mostrarNotificacion(): void {
+    this.modalService = this.modal.open(this.modalNotificacion);
+    setTimeout(() => {
+      if (this.modal.hasOpenModals()) {
+        this.modalService.close(this.modalNotificacion);
+      }
+    }, 5000);
   }
 
   registrarLocal(): void {
@@ -206,19 +217,17 @@ export class UsuarioComponent implements OnInit {
   }
 
   cancelarTurno(): void {
-    console.log(this.local);
-    console.log(this.idRegistro);
     // tslint:disable-next-line: radix
-    this.$api.dejarTurnoUsuario(this.local.idLocal, this.idRegistro.get(this.local.idLocal.toString())).pipe(
+    this.$api.dejarTurnoUsuario(this.local.idLocal.toString(), this.idRegistro.get(this.local.idLocal.toString())).pipe(
       tap((data: any) => {
         this.data = data;
         this.idTurno.splice(this.idTurno.findIndex((e: any) => e === this.local.idLocal.toString()), 1);
         localStorage.setItem('turno', this.idTurno);
         this.localesTurno.splice(this.localesTurno.findIndex((e: any) => e.toString() === this.data.turnoUltimo.toString()), 1);
         localStorage.setItem('turnoLocal', this.localesTurno);
-        this.turnos.delete(this.local);
-        this.registro.splice(this.registro.findIndex((e: any) => e === this.idRegistro.get(this.local.idLocal.toString())));
-        this.idRegistro.delete(this.local);
+        this.turnos.delete(this.local.idLocal.toString());
+        this.registro.splice(this.registro.findIndex((e: any) => e === this.idRegistro.get(this.local.idLocal.toString())), 1);
+        this.idRegistro.delete(this.local.idLocal.toString());
         localStorage.setItem('idRegistro', this.registro);
       }),
       catchError((e: HttpErrorResponse) => {

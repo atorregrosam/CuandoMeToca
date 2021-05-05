@@ -18,6 +18,7 @@ export class ControlComponent implements OnInit, OnDestroy {
   @ViewChild('modalAnyadir', { static: false }) modalAnyadir!: TemplateRef<any>;
   @ViewChild('modalEliminar', { static: false }) modalEliminar!: TemplateRef<any>;
   @ViewChild('modalConfirmacion', { static: false }) modalConfirmacion!: TemplateRef<any>;
+  @ViewChild('modalTurno', { static: false }) modalTurno!: TemplateRef<any>;
 
   private id: string | null = null;
   private interval: Subscription | undefined;
@@ -160,6 +161,7 @@ export class ControlComponent implements OnInit, OnDestroy {
         this.datos = data;
         this.turnoUltimo = this.datos.turnoUltimo;
         this.esperando = this.datos.esperando;
+        this.modal.open(this.modalTurno);
       }),
       catchError((e: HttpErrorResponse) => {
         this.toastr.error(this.$api.getErrorResponse(e));

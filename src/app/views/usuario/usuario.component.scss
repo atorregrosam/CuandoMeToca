@@ -4,23 +4,23 @@
     }
 }
 
-@font-face {
-  font-family: open-sans;
-  src: url(../../../assets/fonts/Open-sans/OpenSans-Regular.ttf);
+.nav {
+  font-family: Opensns;
 }
 
 .cuerpo {
     background-color: navajowhite;
     min-height: 400px;
     height: 70vh;
+    font-family: Opensns;
+}
+
+.modal-content {
+  font-family: Opensns;
 }
 
 .btn {
   height: 62px;
-}
-
-.texto {
-  font-family: 'open-sans';
 }
 
 .lista {
